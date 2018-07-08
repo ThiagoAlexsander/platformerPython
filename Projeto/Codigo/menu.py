@@ -1,3 +1,5 @@
+# @	Não implementado ainda
+
 from botao import Botao
 class Menu(Botao):
 

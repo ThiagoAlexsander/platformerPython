@@ -1,3 +1,5 @@
+# @	Não implementado ainda
+
 from dimensao import Dimensao
 class Botao(Dimensao):
 
@@ -6,8 +8,10 @@ class Botao(Dimensao):
         self.__intervalo = intervalo
         self.__ativo = ativo
         self.__visivel = visivel
+
     def get_ativo(self):
 
         return self.__ativo
-    def checar_intervalo(self):
 
+    def checar_intervalo(self):
+    	pass
