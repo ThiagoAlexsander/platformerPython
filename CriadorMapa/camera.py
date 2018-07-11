@@ -12,8 +12,8 @@ class Camera(object):
 	def aplicar(self, entidade, dt):
 		x = entidade.x
 		y = entidade.y
-		x += self.x * dt * 2
-		y += self.y * dt * 2
+		x += self.x + dt * 2
+		y += self.y + dt * 2
 		return (x, y)
 
 	def aplicar_mouse(self, pos):
