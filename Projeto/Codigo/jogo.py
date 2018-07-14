@@ -144,6 +144,7 @@ class Jogo(object):
 
 		self.__jogador.desenhar(self.__screen, self.camera.aplicar(self.__jogador, dt))
 
+
 		for plat in self.__gFase.get_plataformas():
 			plat.desenhar(self.__screen, self.camera.aplicar(plat, dt))
 

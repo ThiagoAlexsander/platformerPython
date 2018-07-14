@@ -12,8 +12,9 @@ class Camera(object):
 	def aplicar(self, entidade, dt):
 		x = entidade.x
 		y = entidade.y
-		x += self.x * 0.87
-		y += self.y * 0.87
+		x += self.x
+		y += self.y
+
 		return (x, y)
 
 	def atualizar(self, foco):

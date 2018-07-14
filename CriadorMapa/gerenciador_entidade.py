@@ -240,12 +240,12 @@ class GerenciadorEntidade(object):
 						print("Salvo!")
 						copy2("Fases/"+self.arquivo_atual,"../Projeto/Fases")
 						print("Arquivo enviado!")
-						Popen("python jogo.py", cwd="../Projeto/Codigo/", shell=False)
+						Popen("python jogo.py", cwd="../Projeto/Codigo/", shell=True)
 					else:
 						msgbox("Nenhum arquivo aberto ou salvo!", "Erro")
 
 				elif e.key == pygame.K_b:
-					Popen("python jogo.py", cwd="../Projeto/Codigo/", shell=False)
+					Popen("python jogo.py", cwd="../Projeto/Codigo/", shell=True)
 
 				elif e.key == pygame.K_n:
 					self.entidades = []
