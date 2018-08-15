@@ -1,4 +1,5 @@
 from sys import version
+from gui import GUI
 print(version)
 
 try:
@@ -7,8 +8,9 @@ except ImportError:
 	from os import system
 	system("pip install pygame-1.9.3-cp37-cp37m-win_amd64.whl")
 	system("pip install pygame-1.9.3-cp37-cp37m-win32")
-	from sys import exit
-	exit()
+	#from sys import exit
+	#exit()
+	import pygame
 
 from gerenciador_fase import GerenciadorFase
 from jogador import Jogador
@@ -17,17 +19,19 @@ from plataforma import Plataforma
 from camera import Camera
 
 pygame.init()
+
 class Jogo(object):
 
 	def __init__(self):
 
-		self.FPS = 120
+		self.__FPS = 120
 		self.clock = pygame.time.Clock()
-		self.__screen = pygame.display.set_mode((800, 600))
+		self.__tela = pygame.display.set_mode((800, 600))
 		self.__gFase = GerenciadorFase()
 		self.__jogador = None
 		self.__rodando = False
 		self.__pausado = False
+		self.__gui = GUI(1, 0, 0, 150, 100, (10, 10, 10))
 
 		self.camera = Camera(800, 600)
 
@@ -97,7 +101,7 @@ class Jogo(object):
 			self.__atualizar(dt)
 			self.__desenhar(dt)
 
-			dt = self.clock.tick(self.FPS) / 1000.0
+			dt = self.clock.tick(self.__FPS) / 1000.0
 
 	def __evento(self):
 
@@ -109,6 +113,9 @@ class Jogo(object):
 			elif e.type == pygame.MOUSEBUTTONDOWN:
 
 				if e.button == 1:
+
+					# HACK
+
 					pos = pygame.mouse.get_pos()
 					print(self.__jogador.y)
 					print(self.__jogador.vel_y)
@@ -135,27 +142,31 @@ class Jogo(object):
 				if pygame.key.get_mods() & pygame.KMOD_SHIFT and e.key == pygame.K_RETURN:
 					if self.__gFase.passar_fase():
 						self.__jogador = self.__gFase.reiniciar_fase_atual()
+
 				elif e.key == pygame.K_RETURN:
+					# HACK
 					self.__jogador.set_y(-1200)
 
 	def __desenhar(self, dt):
 
-		self.__screen.blit(self.__gFase.get_fundo(), (0,0))
+		self.__tela.blit(self.__gFase.get_fundo(), (0,0))
 
-		self.__jogador.desenhar(self.__screen, self.camera.aplicar(self.__jogador, dt))
+		self.__jogador.desenhar(self.__tela, self.camera.aplicar(self.__jogador, dt))
 
 
 		for plat in self.__gFase.get_plataformas():
-			plat.desenhar(self.__screen, self.camera.aplicar(plat, dt))
+			plat.desenhar(self.__tela, self.camera.aplicar(plat, dt))
 
 		for ene in self.__gFase.get_energias():
-			ene.desenhar(self.__screen, self.camera.aplicar(ene, dt))
+			ene.desenhar(self.__tela, self.camera.aplicar(ene, dt))
 
 		for ini in self.__gFase.get_inimigos():
-			ini.desenhar(self.__screen, self.camera.aplicar(ini, dt), self.camera, dt)
+			ini.desenhar(self.__tela, self.camera.aplicar(ini, dt), self.camera, dt)
 
 		for moe in self.__gFase.get_moedas():
-			moe.desenhar(self.__screen, self.camera.aplicar(moe, dt))
+			moe.desenhar(self.__tela, self.camera.aplicar(moe, dt))
+
+		self.__gui.desenhar(self.__tela)
 
 	def __atualizar(self, dt):
 
