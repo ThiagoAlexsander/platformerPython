@@ -25,7 +25,7 @@ class Projetil(Entidade, Sprite):
 		if self.colidindo(jogador):
 			jogador.subtrair_vida()
 			self.ativo = False
-		elif (self.x > 800 or self.x < 0):
+		elif (self.x > 3400 or self.x < -3400):
 			self.ativo = False
 		else:
 			self.mover()
