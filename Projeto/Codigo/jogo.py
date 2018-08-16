@@ -31,21 +31,32 @@ class Jogo(object):
 		self.__jogador = None
 		self.__rodando = False
 		self.__pausado = False
-		self.__gui = GUI(1, 0, 0, 150, 100, (10, 10, 10))
+		self.__gui = GUI(0, 0, 150, 100, (10, 10, 10), 100)
 
 		self.camera = Camera(800, 600)
+
+		self.__qnt_moedas = 0
 
 	def __inicializar(self):
 
 		self.__rodando = True
 		self.__gFase.iniciar()
 		self.__jogador = self.__gFase.get_jogador()
-		#self.__jogador.set_vida(3)
+		#	self.__jogador.set_vida(3)
+
+		self.__gui.adicionar_texto(15, 0, 0, 15, 15, "Fase atual: " + str(self.__gFase.get_id()), 40)
+		self.__gui.adicionar_texto(15, 0, 15, 30, 30, "Moedas: " + str(self.get_total_moedas()), 40)
 
 		for plat in self.__gFase.get_plataformas():
 			plat.iniciar()
 
 		#self.__plataforma = Plataforma(400, 200, 100, 30, 0, 0, 0.1, (300, 500), (0, 0))
+
+	def get_total_moedas(self):
+		return self.__qnt_moedas
+
+	def adicionar_moeda(self):
+		self.__qnt_moedas += 1
 
 	def __logica(self, dt):
 		energias = self.__gFase.get_energias()
@@ -56,6 +67,8 @@ class Jogo(object):
 		#print(self.__jogador.get_total_moedas())
 
 		if self.__jogador.get_vida() < 1:
+
+			self.__qnt_moedas = 0
 			self.__jogador = self.__gFase.resetar()
 			#self.__jogador = self.__jogador.clonar()
 			#self.__jogador = self.__gFase.get_jogador()
@@ -83,13 +96,49 @@ class Jogo(object):
 
 		for moe in moedas:
 			if moe.get_ativo():
-				moe.logica(self.__jogador)
+				colidiu = moe.logica(self.__jogador)
+				if colidiu:
+					self.adicionar_moeda()
+
 				moe.iniciar_animacao_alpha()
 			
 		if self.__gFase.objetivo_completo():
 			if self.__gFase.passar_fase():
 				self.__jogador = self.__gFase.reiniciar_fase_atual()
+			else:
+				self.mostrar_tela_fim()
 		
+		if self.__jogador.y > self.__gFase.get_objeto_mais_baixo()[1]:
+			self.__jogador = self.__gFase.reiniciar_fase_atual()
+
+	def mostrar_tela_fim(self):
+
+		self.__tela.fill((0, 0, 0))
+
+		menu = True
+
+		while menu:
+
+			self.clock.tick(self.__FPS)
+
+			for e in pygame.event.get():
+
+				if e.type == pygame.QUIT:
+					menu = False					
+					self.__rodando = False
+
+				if e.type == pygame.KEYDOWN:
+
+					if e.key == pygame.K_r:
+						menu = False
+						self.__gFase.recomecar()
+						self.__jogador = self.__gFase.reiniciar_fase_atual()
+
+					if e.key == pygame.K_ESCAPE:
+						menu = False				
+						self.__rodando = False
+
+			pygame.display.flip()
 
 	def rodar(self):
 
@@ -129,16 +178,6 @@ class Jogo(object):
 				if e.key == pygame.K_ESCAPE:
 					self.__rodando = False
 
-				if e.key == pygame.K_a:
-					self.camera.x -= 1
-				elif e.key == pygame.K_d:
-					self.camera.x += 1
-
-				if e.key == pygame.K_w:
-					self.camera.y -= 1
-				elif e.key == pygame.K_s:
-					self.camera.y += 1
-
 				if pygame.key.get_mods() & pygame.KMOD_SHIFT and e.key == pygame.K_RETURN:
 					if self.__gFase.passar_fase():
 						self.__jogador = self.__gFase.reiniciar_fase_atual()
@@ -172,8 +211,15 @@ class Jogo(object):
 
 		self.__logica(dt)
 		self.camera.atualizar(self.__jogador)
+
+		self.__gui.definir_texto(0, "Fase atual: " + str(self.__gFase.get_id()))
+		self.__gui.definir_texto(1, "Moedas: " + str(self.get_total_moedas()))
+
+		#print(self.__gFase.get_objeto_mais_baixo())
+
 		pygame.display.flip()
 
 if __name__ == "__main__":
+
 	jogo = Jogo()
 	jogo.rodar()

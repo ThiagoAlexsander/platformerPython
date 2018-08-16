@@ -20,8 +20,10 @@ class Moeda(Entidade, Sprite):
 	def logica(self, jogador):
 
 		if self.colidindo(jogador):
-			jogador.adicionar_moeda()
 			self.__ativo = False
+			return True
+			
+		return False
 
 	def desenhar(self, superficie, pos):
 		

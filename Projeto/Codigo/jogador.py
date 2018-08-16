@@ -9,19 +9,26 @@ class Jogador(Entidade, Sprite):
 		Entidade.__init__(self, x, y, w, h, vel_x, vel_y, vel)
 		Sprite.__init__(self, imagem, cor)
 
-		self.__qnt_moedas = 0
 		self.__vida = 3
 		self.__gravidade = 5.8 #3.2
 		self.__cor = cor
 		self.__no_chao = False
+		self.x_inicial = x
+		self.y_inicial = y
 
 	def clonar(self):
 
 		return Jogador(self.x, self.y, self.w, self.h, self.vel_x, self.vel_y, self.vel, self.cor, self.caminho_imagem)
 
-	def resetar(self):
-		self.__qnt_moedas = 0
-		self.__vida = 3
+	#def resetar(self):
+
+	#	self.__vida = 3
+
+	def reposicionar(self):
+		self.vel_x = 0
+		self.vel_y = 0
+		self.x = self.x_inicial
+		self.y = self.y_inicial
 
 	def desenhar(self, superficie, pos):
 
@@ -56,7 +63,6 @@ class Jogador(Entidade, Sprite):
 		
 		self.__evento(ents)
 		for ent in ents:
-
 
 			if self.colidindo_cima(ent):
 
@@ -99,9 +105,6 @@ class Jogador(Entidade, Sprite):
 
 		self.vel_x = 0
 
-	def adicionar_moeda(self):
-		self.__qnt_moedas += 1
-
 	def adicionar_vida(self):
 		self.__vida += 1
 
@@ -113,9 +116,6 @@ class Jogador(Entidade, Sprite):
 
 	def set_vida(self, vida):
 		self.__vida = vida
-
-	def get_total_moedas(self):
-		return self.__qnt_moedas
 
 	def get_cor(self):
 		return self.__cor

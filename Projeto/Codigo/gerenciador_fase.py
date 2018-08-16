@@ -39,7 +39,7 @@ class GerenciadorFase(object):
 			#if plat.__class__.__name__ == "PlataformaAndante":
 				#print("OLD PlataformaAndante:",plat.x, plat.y)
 		#print("OLD",self.__lista_fases)
-		self.__restaurar_lista_fases()
+		self.restaurar_lista_fases()
 		#print("NEW",self.__lista_fases)
 		fase = self.get_fase_com_id(fase_atual_id_antigo)
 		if fase:
@@ -53,11 +53,18 @@ class GerenciadorFase(object):
 	def __adicionar_fase(self, fase):
 		self.__lista_fases_original.append(fase.clonar())
 
-	def __restaurar_lista_fases(self):
+	def restaurar_lista_fases(self):
 		l = []
 		for f in self.__lista_fases_original:
 			l.append(f.clonar())
 		self.__lista_fases = l
+
+	def recomecar(self):
+		l = []
+		for f in self.__lista_fases_original:
+			l.append(f.clonar())
+		self.__lista_fases = l
+		self.__set_fase_atual(self.get_fase_com_id(0))
 
 	def __carregar_fases(self):
 		#os.chdir("./Fases")
@@ -72,7 +79,7 @@ class GerenciadorFase(object):
 				#self.__lista_fases_original.append(fase)
 				self.__adicionar_fase(fase)
 
-		self.__restaurar_lista_fases()
+		self.restaurar_lista_fases()
 		self.__set_fase_atual(self.get_fase_com_id(0))
 
 	def __set_fase_atual(self, fase):
@@ -112,6 +119,10 @@ class GerenciadorFase(object):
 
 	def get_moedas(self):
 		return self.__fase_atual.get_moedas()
+
+	def get_objeto_mais_baixo(self):
+		
+		return self.__fase_atual.get_objeto_mais_baixo()
 
 	def objetivo_completo(self):
 		ativos = []

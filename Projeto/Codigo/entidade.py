@@ -10,6 +10,9 @@ class Entidade(object):
 		self.vel_y = vel_y
 		self.vel = vel
 
+	def get_posicao_inicial(self):
+		return (self.x, self.y)
+
 	def aplicar_posicao_x(self, vel):
 		self.x += vel
 

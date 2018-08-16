@@ -10,7 +10,34 @@ class Fase(object):
 		self.__id = _id
 		self.__jogador = jogador
 		self.cor = cor
+		self.__todos_objetos = []
+
+		for plat in self.__plataformas:
+			self.__todos_objetos.append(plat)
+
+		for moe in self.__moedas:
+			self.__todos_objetos.append(moe)
+
+		for ene in self.__energias:			
+			self.__todos_objetos.append(ene)
+
+		for ini in self.__inimigos:
+			self.__todos_objetos.append(ini)
+
+	def get_objeto_mais_baixo(self):
 		
+		mais_baixo = None
+		for i in range(len(self.__todos_objetos)):
+			if i == 0:
+				mais_baixo = self.__todos_objetos[i]
+			elif self.__todos_objetos[i].y > mais_baixo.y:
+					mais_baixo = self.__todos_objetos[i]		
+
+		return mais_baixo.get_posicao_inicial()
+	
+	def get_objetos(self):
+		return self.__todos_objetos[:]
+
 	def get_id(self):
 		return self.__id
 
@@ -49,7 +76,7 @@ class Fase(object):
 			moedas.append(moe.clonar())
 
 		energias = []
-		for ene in self.__energias:
+		for ene in self.__energias:			
 			energias.append(ene.clonar())
 
 		inimigos = []

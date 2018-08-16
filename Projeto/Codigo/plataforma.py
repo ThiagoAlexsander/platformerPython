@@ -33,7 +33,7 @@ class Plataforma(Entidade, Sprite):
 
 class PlataformaAndante(Plataforma):
 
-	def __init__(self, x, y, w, h, vel_x = 0, vel_y = 0, vel = 1, limite_x = (100, 700), limite_y = (100, 500), intervalo = 10.0, cor = (200, 0, 150), imagem=None):
+	def __init__(self, x, y, w, h, vel_x = 0, vel_y = 0, vel = 1, limite_x = (100, 100), limite_y = (0, 0), intervalo = 10.0, cor = (200, 0, 150), imagem=None):
 
 		Plataforma.__init__(self, x, y, w, h, vel_x, vel_y, vel, cor, imagem)
 
@@ -47,6 +47,9 @@ class PlataformaAndante(Plataforma):
 		self.primeira_vez = True
 
 		self.__intervalo_original = intervalo
+
+	def get_posicao_inicial(self):
+		return (self.__limite_x[0], self.__limite_y[1])
 
 	def __str__(self):
 		return str(self.move_type)
