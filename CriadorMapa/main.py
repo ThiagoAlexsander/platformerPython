@@ -1,3 +1,4 @@
+from os import kill, getpid
 import pygame
 from gerenciador_fase import GerenciadorFase
 
@@ -82,7 +83,6 @@ class EditorFases(object):
 		dt = 0
 		while self.rodando:
 
-
 			self.eventos()
 			self.atualizar()
 			self.desenhar(dt)
@@ -91,5 +91,6 @@ class EditorFases(object):
 if __name__ == "__main__":
 
 	m = EditorFases()
-
 	m.novo()
+
+	kill(getpid(), 9)

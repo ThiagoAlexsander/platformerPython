@@ -17,6 +17,12 @@ class Camera(object):
 
 		return (x, y)
 
+	def aplicar_mouse(self, pos):
+		xy = list(pos)
+		xy[0] += self.x
+		xy[1] += self.y
+		return xy
+
 	def atualizar(self, foco):
 		# print(foco.x)
 		# print(foco.y)

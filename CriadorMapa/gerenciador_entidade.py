@@ -8,7 +8,7 @@ try:
 	from easygui import enterbox, msgbox, multenterbox
 except ImportError:
 	from os import system
-	system("pip install easygui-0.98.1-py2.py3-none-any.whl --user")
+	system("pip3 install easygui-0.98.1-py2.py3-none-any.whl --user")
 	from sys import exit
 	exit()
 

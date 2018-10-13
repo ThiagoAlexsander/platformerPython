@@ -16,6 +16,11 @@ class GerenciadorFase(object):
 		self.__lista_fases = []
 		self.__lista_fases_original = []
 
+		self.__total_energia_ativos = 0
+
+	def get_ultima_fase(self):
+		return len(self.__lista_fases)
+
 	def iniciar(self):
 		self.__carregar_fases()
 
@@ -60,10 +65,7 @@ class GerenciadorFase(object):
 		self.__lista_fases = l
 
 	def recomecar(self):
-		l = []
-		for f in self.__lista_fases_original:
-			l.append(f.clonar())
-		self.__lista_fases = l
+		self.restaurar_lista_fases()
 		self.__set_fase_atual(self.get_fase_com_id(0))
 
 	def __carregar_fases(self):
@@ -121,16 +123,22 @@ class GerenciadorFase(object):
 		return self.__fase_atual.get_moedas()
 
 	def get_objeto_mais_baixo(self):
-		
 		return self.__fase_atual.get_objeto_mais_baixo()
 
+	def get_total_energias(self):
+		return self.__total_energia_ativos
+
 	def objetivo_completo(self):
+		count = 0
 		ativos = []
 		for i in self.__fase_atual.get_energias():
-			ativos.append(i.get_ativo())
+			if i.get_ativo():
+				count += 1
+				ativos.append(True)
 
-		#print(ativos)
 		if True in ativos:
+			self.__total_energia_ativos = count
 			return False
 		else:
+			self.__total_energia_ativos = 0
 			return True

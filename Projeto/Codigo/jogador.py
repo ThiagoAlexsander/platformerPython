@@ -9,7 +9,7 @@ class Jogador(Entidade, Sprite):
 		Entidade.__init__(self, x, y, w, h, vel_x, vel_y, vel)
 		Sprite.__init__(self, imagem, cor)
 
-		self.__vida = 3
+		self.__vida = 1
 		self.__gravidade = 5.8 #3.2
 		self.__cor = cor
 		self.__no_chao = False
@@ -43,12 +43,12 @@ class Jogador(Entidade, Sprite):
 		
 		if self.__no_chao:
 
-			self.vel_y = -360 #-240 #-350
+			self.vel_y = -400 #-240 #-350
 			self.__no_chao = False
 
 	def __evento(self, ents):
 		e = pygame.key.get_pressed() # Pega os eventos.
-
+		
 		if e[pygame.K_LEFT]:
 			self.vel_x -= self.vel
 
@@ -57,10 +57,10 @@ class Jogador(Entidade, Sprite):
 		
 		if e[pygame.K_UP]:
 			if self.__no_chao:
-				self.__pular(ents)		
+				self.__pular(ents)
 
 	def logica(self, dt, ents):
-		
+
 		self.__evento(ents)
 		for ent in ents:
 
@@ -110,6 +110,9 @@ class Jogador(Entidade, Sprite):
 
 	def subtrair_vida(self):
 		self.__vida -= 1
+
+	def get_no_chao(self):
+		return self.__no_chao
 
 	def get_vida(self):
 		return self.__vida

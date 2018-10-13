@@ -94,3 +94,7 @@ class Entidade(object):
 
 	def get_vel(self):
 		return self.vel
+
+	def set_pos(self, pos):
+		self.x = pos[0]
+		self.y = pos[1]
